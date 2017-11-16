@@ -1,6 +1,7 @@
 const electron = require('electron');
 const url = require('url');
 const path = require('path');
+const randomString = require("randomstring");
 
 const {app, BrowserWindow, Menu, ipcMain} = electron;
 
@@ -40,7 +41,7 @@ function createAddWindow(){
   // Create new window
   addWindow = new BrowserWindow({
     width: 300,
-    height: 200,
+    height: 250,
     title: 'Add Test'
   });
 
@@ -58,9 +59,9 @@ function createAddWindow(){
 }
 
 // Catch item:add
-ipcMain.on('item:add', function(e, item){
+ipcMain.on('item:add', function(e, item, item2){
   console.log(item);
-  mainWindow.webContents.send('item:add', item);
+  mainWindow.webContents.send('item:add', item, item2);
   addWindow.close();
 });
 
@@ -109,6 +110,14 @@ if(process.env.NODE_ENV !== 'production'){
           'Ctrl+I',
         click(item, focusedWindow){
           focusedWindow.toggleDevTools();
+        }
+      },
+      {
+        label: 'Add Test Item',
+        accelerator: process.platform  == 'darwin' ? 'Command+D' :
+          'Ctrl+D',
+        click(){
+          mainWindow.webContents.send('item:add', randomString.generate(), randomString.generate());
         }
       },
       {
