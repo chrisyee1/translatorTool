@@ -10,6 +10,7 @@ const {app, BrowserWindow, Menu, ipcMain} = electron;
 //process.env.NODE_ENV = 'production';
 
 let mainWindow;
+let processWindow;
 let addWindow;
 
 // Listen for app to be ready
@@ -46,7 +47,7 @@ ipcMain.on('item:add', function(e, item){
       console.error(err);
   });
   //mainWindow.webContents.send('item:add', item, item2);
-  addWindow.close();
+  processWindow.close();
 });
 
 // Catch item:add
@@ -54,10 +55,29 @@ ipcMain.on('process:open', function(e){
   createProcessWindow();
 });
 
-
-
 // Handle create add window
 function createProcessWindow(){
+  // Create new window
+  processWindow = new BrowserWindow({
+    width: 500,
+    height: 250,
+    title: 'Process List'
+  });
+
+  // Load HTML into Window file://__dirname/mainWindow.html
+  processWindow.loadURL(url.format({
+    pathname: path.join(__dirname, 'processWindow.html'),
+    protocol: 'file:',
+    slashes: true
+  }));
+
+  // Garbage collection handle
+  processWindow.on('close', function(){
+    processWindow = null;
+  });
+}
+
+function createAddWindow(){
   // Create new window
   processWindow = new BrowserWindow({
     width: 300,
@@ -67,7 +87,7 @@ function createProcessWindow(){
 
   // Load HTML into Window file://__dirname/mainWindow.html
   processWindow.loadURL(url.format({
-    pathname: path.join(__dirname, 'processWindow.html'),
+    pathname: path.join(__dirname, 'addWindow.html'),
     protocol: 'file:',
     slashes: true
   }));
@@ -84,7 +104,7 @@ const mainMenuTemplate = [
     label:'File',
     submenu: [
       {
-        label: 'Add Item',
+        label: 'Process List',
         click(){
           createProcessWindow();
         }
@@ -131,6 +151,12 @@ if(process.env.NODE_ENV !== 'production'){
           'Ctrl+D',
         click(){
           mainWindow.webContents.send('item:add', randomString.generate(), randomString.generate());
+        }
+      },
+      {
+        label: 'Open Add Item Window',
+        click(){
+          createAddWindow();
         }
       },
       {

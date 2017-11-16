@@ -5,27 +5,15 @@
   <title>Add Window Test</title>
 </head>
 <body>
+  <nav>
+    <div class="nav-wrapper teal lighten-2">
+      <a href="#" class="brand-logo center">Process List</a>
+    </div>
+  </nav>
   <div class="container">
-    <form>
-      <div>
-        <label>Enter Text</label>
-        <input type="text" id="item" autofocus>
+      <div class="collection">
       </div>
-      <button class="btn waves-effect waves-light" type="submit">Add Item</button>
-    </form>
   </div>
-  <script>
-    const electron = require('electron');
-    const{ipcRenderer} = electron;
-
-    const form = document.querySelector('form');
-    form.addEventListener('submit', submitForm);
-
-    function submitForm(e){
-      e.preventDefault();
-      const item = document.querySelector('#item').value;
-      ipcRenderer.send('item:add', item);
-    }
-  </script>
+  <script src="processWindowScript.js"></script>
 </body>
 </html>
