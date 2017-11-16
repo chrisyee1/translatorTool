@@ -15,6 +15,7 @@
     "electron": "^1.7.9",
     "google-translate-api": "^2.3.0",
     "node-gyp": "^3.6.2",
+    "ps-node": "^0.1.6",
     "randomstring": "^1.1.5"
   },
   "devDependencies": {
