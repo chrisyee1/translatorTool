@@ -11,10 +11,6 @@
         <label>Enter Text</label>
         <input type="text" id="item" autofocus>
       </div>
-      <div>
-        <label>Enter Second Text</label>
-        <input type="text" id="item2">
-      </div>
       <button class="btn waves-effect waves-light" type="submit">Add Item</button>
     </form>
   </div>
@@ -28,8 +24,7 @@
     function submitForm(e){
       e.preventDefault();
       const item = document.querySelector('#item').value;
-      const item2 = document.querySelector('#item2').value;
-      ipcRenderer.send('item:add', item, item2);
+      ipcRenderer.send('item:add', item);
     }
   </script>
 </body>

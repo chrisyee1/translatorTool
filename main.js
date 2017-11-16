@@ -2,6 +2,7 @@ const electron = require('electron');
 const url = require('url');
 const path = require('path');
 const randomString = require("randomstring");
+const translate = require('google-translate-api');
 
 const {app, BrowserWindow, Menu, ipcMain} = electron;
 
@@ -59,9 +60,15 @@ function createAddWindow(){
 }
 
 // Catch item:add
-ipcMain.on('item:add', function(e, item, item2){
+ipcMain.on('item:add', function(e, item){
   console.log(item);
-  mainWindow.webContents.send('item:add', item, item2);
+  translate(item, {from: 'ja', to: 'en'}).then(res => {
+    console.log(res.text);
+    mainWindow.webContents.send('item:add', item, res.text);
+  }).catch(err => {
+      console.error(err);
+  });
+  //mainWindow.webContents.send('item:add', item, item2);
   addWindow.close();
 });
 
