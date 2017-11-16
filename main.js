@@ -34,30 +34,7 @@ app.on('ready', function(){
 
   // Insert menu
   Menu.setApplicationMenu(mainMenu);
-
 });
-
-// Handle create add window
-function createAddWindow(){
-  // Create new window
-  addWindow = new BrowserWindow({
-    width: 300,
-    height: 250,
-    title: 'Add Test'
-  });
-
-  // Load HTML into Window file://__dirname/mainWindow.html
-  addWindow.loadURL(url.format({
-    pathname: path.join(__dirname, 'addWindow.html'),
-    protocol: 'file:',
-    slashes: true
-  }));
-
-  // Garbage collection handle
-  addWindow.on('close', function(){
-    addWindow = null;
-  });
-}
 
 // Catch item:add
 ipcMain.on('item:add', function(e, item){
@@ -72,6 +49,35 @@ ipcMain.on('item:add', function(e, item){
   addWindow.close();
 });
 
+// Catch item:add
+ipcMain.on('process:open', function(e){
+  createProcessWindow();
+});
+
+
+
+// Handle create add window
+function createProcessWindow(){
+  // Create new window
+  processWindow = new BrowserWindow({
+    width: 300,
+    height: 250,
+    title: 'Add Test'
+  });
+
+  // Load HTML into Window file://__dirname/mainWindow.html
+  processWindow.loadURL(url.format({
+    pathname: path.join(__dirname, 'processWindow.html'),
+    protocol: 'file:',
+    slashes: true
+  }));
+
+  // Garbage collection handle
+  processWindow.on('close', function(){
+    processWindow = null;
+  });
+}
+
 // Create menu template
 const mainMenuTemplate = [
   {
@@ -80,7 +86,7 @@ const mainMenuTemplate = [
       {
         label: 'Add Item',
         click(){
-          createAddWindow();
+          createProcessWindow();
         }
       },
       {
