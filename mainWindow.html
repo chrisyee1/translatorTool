@@ -1,9 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>TestApp</title>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+  <title>Translator Tool</title>
 </head>
 <body>
-  <h1>TestApp</h1>
+  <nav>
+    <div class="nav-wrapper">
+      <a class="brand-logo center">Translator Tool</a>
+    </div>
+  </nav>
+  <ul></ul>
+
+  <script>
+    const electron = require('electron');
+    const {ipcRenderer} = electron;
+    const ul = document.querySelector('ul');
+
+    // Add Item
+    ipcRenderer.on('item:add', function(e, item){
+      const li = document.createElement('li');
+      const itemText = document.createTextNode(item);
+      ul.className = 'collection';
+      li.className = 'collection-item'
+
+      li.appendChild(itemText);
+      ul.appendChild(li);
+    });
+
+    // Clear items
+    ipcRenderer.on('item:clear', function(){
+      ul.innerHTML = '';
+      ul.className = '';
+    });
+
+    //Remove item
+    ul.addEventListener('dblclick', removeItem);
+
+    function removeItem(e){
+      e.target.remove();
+      if(ul.children.length == 0){
+        ul.className = '';
+      }
+    }
+
+  </script>
 </body>
 </html>
