@@ -3,6 +3,7 @@ const url = require('url');
 const path = require('path');
 const randomString = require("randomstring");
 const translate = require('google-translate-api');
+const hello = require('./bin/linux-x64-54/translatorTool')
 
 const {app, BrowserWindow, Menu, ipcMain} = electron;
 
@@ -16,6 +17,7 @@ let addWindow;
 // Listen for app to be ready
 app.on('ready', function(){
   // Create new window
+  console.log(hello.hello());
   mainWindow = new BrowserWindow({});
 
   // Load HTML into Window file://__dirname/mainWindow.html
